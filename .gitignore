@@ -1,3 +1,4 @@
 notebooks/*
 __pycache__/*
 *.pyc
+paths.json

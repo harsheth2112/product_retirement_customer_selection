@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import copy
+import sys
 
 
 import main
@@ -28,6 +29,25 @@ def base_testing(paths):
             final_df_list.append(main.run_scenarios(parameters, MNLCustomer))
     pd.concat(final_df_list, ignore_index=True).to_csv(
         paths["results_directory"] / "het_mnl_results_test_xyz.csv")
+
+
+def base_testing_remote(i1, i2, paths):
+    sels = [0.25, 0.5, 0.75, 1.0]
+    lfs = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
+    sel = sels[i1]
+    lf = lfs[i2]
+    parameters = {
+        "input_file": paths["input_directory"] / "input_mnl_het_T1000_100.csv",
+        "instance_count": 100,
+        "iteration_count": 50,
+        "load_factor": lf,
+        "selection_rate": sel,
+        "demand_spread": 0.8,
+        "supply_spread": 0.8,
+        "scale": 1
+    }
+    df = main.run_scenarios(parameters, MNLCustomer)
+    df.to_csv("output/het_mnl_results_rmp_2021_2_%.2f_%.2f.csv" % (sel, lf), index=False)
 
 
 def downscale_testing(paths):
@@ -83,7 +103,14 @@ def convergence_testing(paths):
     result_df.to_csv(paths["results_directory"] / 'hom_convergence_6.csv', index=False)
 
 
+remote = False
 if __name__ == '__main__':
     path_names = get_paths("paths.json")
-    np.random.seed(1405)
-    base_testing(path_names)
+    if not remote:
+        np.random.seed(1405)
+        base_testing(path_names)
+    else:
+        a = int(sys.argv[1]) - 1
+        b = int(sys.argv[2]) - 1
+        np.random.seed(1405 + a * 100 + b * 1000)
+        base_testing_remote(a, b, path_names)
