@@ -4,47 +4,6 @@ import numpy as np
 from algorithms.sequences import random_sequence
 
 
-class Instance:
-    """
-    A class to allow the problem instance to move through the pipeline easily
-
-    Attributes
-    __________
-    revenues : numpy.array(float)
-        revenues of products
-    initial_inventory : numpy.array(float)
-        initial inventories of products
-    customers : list(Customer)
-        list of different customer types that can be selected from
-    T : int
-        time horizon
-    n : int
-        total number of products
-    m : int
-        total number of customer types
-    revenue_order : numpy.array(int)
-        order of products from highest to lowest revenue
-    reverse_revenue_order : numpy.array(int)
-        inverse function for revenue_order used to retrieve original revenue_order
-    """
-    def __init__(self, revenues, initial_inventory, customers, time_horizon):
-        self.revenues = np.array(revenues)
-        self._revenue_order = np.argsort(self.revenues)[::-1]
-        self.reverse_revenue_order = np.argsort(self._revenue_order)
-        self.initial_inventory = np.array(initial_inventory)
-        self.customers = customers
-        self.T = time_horizon
-        self.n = self.revenues.size
-        self.m = len(self.customers)
-
-    @property
-    def preference_weights(self):
-        if type(self.customers).__name__ == "ndarray":
-            return np.vstack(self.customers)
-        else:
-            return np.vstack([self.customers[j].attraction for j in range(self.m)])
-
-
 class Algorithm:
     """
     A class providing the general framework to define product retirement and customer selection algorithms
