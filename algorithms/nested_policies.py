@@ -86,6 +86,7 @@ def _mnl_nested_policy_sequence_constructor(algorithm):
     solution, opt = mnl_sales_lp_retirement(*args)
     revenue_ordered_heap = []
     total_customers = 0
+    heap_index = 0
     for j in range(m):
         customer = algorithm.customers[j]
         offer_times = nested_assortments(solution[j, :], customer)
@@ -104,7 +105,8 @@ def _mnl_nested_policy_sequence_constructor(algorithm):
                          "assortment": available[:n],
                          "key": (-np.sum(available),)}
                 hq.heappush(revenue_ordered_heap,
-                            (customer.expected_revenue(available, algorithm.revenues), "block", block))
+                            (customer.expected_revenue(available, algorithm.revenues), heap_index, "block", block))
+                heap_index += 1
             offer_times = offer_times - block_size * available
             if frac >= threshold:
                 probabilities = [frac]
@@ -121,12 +123,13 @@ def _mnl_nested_policy_sequence_constructor(algorithm):
                     offer_times = offer_times - capacity * available
                     revenue += customer.expected_revenue(available, algorithm.revenues) * capacity
                     space = space - capacity
-                hq.heappush(revenue_ordered_heap, (revenue, "p_vector", (probabilities, assortments, j)))
+                hq.heappush(revenue_ordered_heap, (revenue, heap_index, "p_vector", (probabilities, assortments, j)))
+                heap_index += 1
             available = np.array(offer_times > threshold, dtype=int)
     while total_customers > algorithm.T:
         delta = total_customers - algorithm.T
-        if revenue_ordered_heap[0][1] == "block":
-            block_size = revenue_ordered_heap[0][2]["count"]
+        if revenue_ordered_heap[0][2] == "block":
+            block_size = revenue_ordered_heap[0][3]["count"]
             remove_count = min(delta, block_size)
             total_customers = total_customers - remove_count
             if remove_count == block_size:
@@ -137,8 +140,8 @@ def _mnl_nested_policy_sequence_constructor(algorithm):
     customer_sequence = CustomerSequence(m, num_keys=1)
     probability_vector_list = []
     for elem in revenue_ordered_heap:
-        if elem[1] == "block":
-            customer_sequence.add_customer_block(elem[2])
+        if elem[2] == "block":
+            customer_sequence.add_customer_block(elem[3])
         else:
-            probability_vector_list.append(elem[2])
+            probability_vector_list.append(elem[3])
     return customer_sequence, probability_vector_list

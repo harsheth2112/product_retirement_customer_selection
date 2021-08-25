@@ -17,9 +17,9 @@ def base_testing(paths):
     for sel in [0.25, 0.5, 0.75, 1.0]:
         for lf in [0.2, 0.4, 0.6, 0.8, 1.0]:
             parameters = {
-                "input_file": paths["input_directory"] / "input_mnl_het_T1000_100.csv",
-                "instance_count": 10,
-                "iteration_count": 10,
+                "input_file": paths["input_directory"] / "input_mnl_het_example_1.csv",
+                "instance_count": 2,
+                "iteration_count": 2,
                 "load_factor": lf,
                 "selection_rate": sel,
                 "demand_spread": 0.8,
@@ -37,7 +37,7 @@ def base_testing_remote(i1, i2, paths):
     sel = sels[i1]
     lf = lfs[i2]
     parameters = {
-        "input_file": paths["input_directory"] / "input_mnl_het_T1000_100.csv",
+        "input_file": paths["input_directory"] / "input_mnl_het_example_1.csv",
         "instance_count": 100,
         "iteration_count": 50,
         "load_factor": lf,
@@ -52,7 +52,7 @@ def base_testing_remote(i1, i2, paths):
 
 def downscale_testing(paths):
     parameters = {
-        "input_file": paths["input_directory"] / "input_mnl_het_T1000_100.csv",
+        "input_file": paths["input_directory"] / "input_mnl_het_example_1.csv",
         "instance_count": 20,
         "iteration_count": 40,
         "load_factor": None,

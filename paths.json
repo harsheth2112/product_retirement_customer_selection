@@ -1,5 +1,5 @@
 {
-  "input_directory": "C:\\Users\\Harsh\\Documents\\Columbia\\Research\\simulations\\data",
-  "results_directory": "C:\\Users\\Harsh\\Documents\\Columbia\\Research\\simulations\\results",
-  "code_directory": "C:\\Users\\Harsh\\Documents\\Columbia\\Research\\simulations\\code"
+  "input_directory": "./example_data",
+  "results_directory": "./results",
+  "code_directory": "."
 }
