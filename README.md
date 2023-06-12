@@ -8,5 +8,5 @@ Module requirements:
 - gurobipy
 
 ===================================================================   
-REFERENCE:
+REFERENCE:   
 [1] Elmachtoub, Adam, Vineet Goyal, Roger Lederman and Harsh Sheth. "Revenue management with product retirement and customer selection."
