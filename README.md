@@ -7,6 +7,6 @@ Module requirements:
 - pandas == 0.23.4
 - gurobipy
 
-===================================================================
+===================================================================   
 REFERENCE:
 [1] Elmachtoub, Adam, Vineet Goyal, Roger Lederman and Harsh Sheth. "Revenue management with product retirement and customer selection."
